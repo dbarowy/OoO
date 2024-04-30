@@ -127,9 +127,7 @@ let oneline =
 
 exprImpl := oneline
 
-let pdoc = pmany1 expr
-
-let exprs = pmany1 (pad expr)
+//let exprs = pmany1 (pad expr)
 
 let grammar = pleft expr peof
 
