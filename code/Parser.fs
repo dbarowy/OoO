@@ -96,8 +96,7 @@ let ptype =
     ((pstr "Cat") |>> (fun _ -> Cat)) <|>
     ((pstr "House") |>> (fun _ -> House)) <|>
     ((pstr "Plant") |>> (fun _ -> Plant)) <|>
-    ((pstr "Fish") |>> (fun _ -> Fish)) <|>
-    ((pstr "Tyler") |>> (fun _ -> Tyler))
+    ((pstr "Fish") |>> (fun _ -> Fish))
   )
 
 (* Parses input of the form "new [Type] [Name]"*)

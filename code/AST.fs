@@ -40,7 +40,6 @@ type Type =
 | Cat
 | House
 | Fish
-| Tyler
 
 type Date = {mon: int; day: int; year: int}
 
