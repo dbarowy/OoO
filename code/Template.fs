@@ -11,7 +11,7 @@ let section (title: string) =
     """\section{""" + title + """}""" + "\n"
 
 
-let setup = 
+let setup= 
   """\documentclass{article}"""+ "\n" +
     """\usepackage{graphicx}"""+ "\n" +
     """\usepackage{times,graphicx,epstopdf,fancyhdr,amsfonts,amsthm,amsmath,algorithm,algorithmic,xspace,hyperref}"""+ "\n" +
@@ -24,9 +24,8 @@ let setup =
     """\usepackage{forest}"""+ "\n" +
     """\usepackage{color}"""+ "\n" +
 
-    """\title{*REPLACE*}"""+ "\n" +
-    """\author{*REPLACE*}"""+ "\n" +
-    """\date{*REPLACE*}"""+ "\n" +
+    """\title{Care Schedule for Caretaker}"""+ "\n" +
+    """\date{Made \today}"""+ "\n" +
 
     """\begin{document}"""+ "\n" +
 

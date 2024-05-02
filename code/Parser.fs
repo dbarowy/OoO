@@ -5,10 +5,10 @@ open Combinator
 
 
 
-let expr, exprImpl = recparser()
+//let expr, exprImpl = recparser()
 
 (* Helper function for stripping arbitrary whitespace between words *)
-let pad p = pbetween pws0 p pws0
+let pad p = pbetween pwsNoNL0 p pwsNoNL0
 
 (* Helper function for parsing dates--DO I NEED THIS? *)
 let date_val =
@@ -26,9 +26,9 @@ let date =
       (pleft date_val (pchar '/'))
       date_val
       (fun (a,b) -> (int a, int b)))
-    (fun (a,(b,c)) ->(int a, int b, int c))
+    (fun (a,(b,c)) ->({mon = int a; day = int b; year = int c} ))
 
-(* Parses digits and returns a Num *)
+(* TEST PARSER: Parses digits and returns a Num *)
 let number = 
   pmany1 pdigit |>> stringify |>> (fun s -> int(s)) |>> Num
 
@@ -36,34 +36,63 @@ let number =
 let word = 
   pmany1 pletter |>> stringify
 
+
 (* Helper function to join list of words *)
 let rec join_words (strs: string list): string =
   match strs with
   | [] -> ""
   | s::[] -> s
-  | s::ss -> s + " " + join_words (ss)
+  | s1::s2::ss -> 
+      match (s1,s2) with
+      | ("'",_) -> s1 + join_words(s2::ss)
+      | (_,".") -> s1 + s2 + join_words(ss)
+      | (_,",") -> s1 + s1 + join_words(ss)
+      | _ -> s1 + " " + join_words (s2::ss)
+
+(* Helper function to join words without parens *)
+let pOKwords =
+  (pmany1 ((pad word) <|> (pad (pstr ".")) <|> (pad (pstr ",")) <|> (pad (pstr """'""")))) 
 
 (* Parses input of the form (word1 word2 word3) and returns string "word1 word2 word3" *)
 let phrase =
   pbetween
    (pad (pchar '('))
-   (pmany1 ((pad word) <|> (pad (pstr ".")) <|> (pad (pstr ",")) <|> (pad (pstr """'"""))))
+   pOKwords
    (pad (pchar ')'))
    |>> join_words
    
-
-(* Returns a Name *)
+(* TEST PARSER: Returns a Name *)
 let name = 
   word |>> (fun s -> Name(s))
 
-(* Parses input of the form "location (name) [int or string]" and returns a Location *)
+let pcaretaker = 
+  pright (pstr "Caretaker: ") name
+
+(* Helper function for pfields: Parses a single field of the form [words1]: [words2] *)
+let pfield = 
+  pseq
+    (pleft
+      (pOKwords |>> join_words)
+      (pchar ':')
+      )
+    (pleft
+      (pOKwords |>> join_words)
+      (pchar ';')
+    ) 
+    (fun (a,b) -> (a,b))
+
+let pfields = 
+  (pmany0 (pfield))
+  |>> (fun a -> {info = a})
+
+(* Parses input of the form "location (name) [Fields]" and returns a Location *)
 let location = 
   pbetween
     (pstr "location")
     (pseq
       (pad (word <|> phrase))
-      (pad expr)
-      (fun(a,b) -> Location(a,b))
+      (pad pfields)
+      (fun(a,b) -> Location(a, b))
     )
     (pws0)
 
@@ -105,29 +134,25 @@ let instance =
     (pad (pstr "new"))
     (pseq
       (pad ptype)
-      (pad phrase)
-      (fun(a,b) -> (a,b))
+      (pseq
+        (pad phrase)
+        (pfields)
+        (fun (a,b) -> (a,b))
+      )
+      (fun(a,(b,c)) -> (a,b,c))
     )
     |>> Instance
-
-// let sequence = 
-//   pseq
-//     (pad expr)
-//     (pright pws1 expr)
-//     (fun(a,b) -> [a;b])
-//   |>> Sequence
-
 
 (* Parses one line (one expr) of the program *)
 let oneline =
   pbetween 
       (pws0)
-      (number <|> location <|> action <|> instance <|> name <|> expr)
-      (pws0)
+      (number <|> location <|> action <|> instance <|> name)// <|> expr)
+      (pmany0 pnl)
 
-exprImpl := oneline
+//exprImpl := oneline
 
-//let exprs = pmany1 (pad expr)
+let expr = pmany1 oneline
 
 let grammar = pleft expr peof
 

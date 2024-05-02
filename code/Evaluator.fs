@@ -1,18 +1,24 @@
-module Evaluator
+module eval
 
 open AST
 open System.IO
 open Template
 
+// NEED TO HAVE SOME SORT OF CATEGORIZING/SORTING FUNCTION
+let sort (es: Expr list) : Expr list =
+  match es with
+  | [] -> []
+  | e1::[] -> [e1]
+  | e1::es -> failwith "to be implemented"
 
-let evalTimeframe (tf: Timescale) : string =
+let evalTimescale (tf: Timescale) : string =
   match tf with
-  | Minute -> "We are on the scale of minutes"
-  | Hour -> "We are on the scale of hours"
-  | Day -> "We are on the scale of days"
-  | Week -> "We are on the scale of weeks"
-  | Month -> "We are on the scale of months"
-  | Year -> "We are on the scale of years"
+  | Minute -> "Minutes"
+  | Hour -> "Hours"
+  | Day -> "Days"
+  | Week -> "Weeks"
+  | Month -> "Months"
+  | Year -> "Years"
 
 let evalType (thing: Type) : string =
   match thing with
@@ -23,17 +29,32 @@ let evalType (thing: Type) : string =
     | House -> "House"
     | Fish -> "Fish"
 
+let rec eval_fields (fields: Fields) : string =
+  match fields.info with
+  | [] -> "---"
+  | (s1,s2)::[] -> "\t" + s1 + ": " + s2
+  | (s1,s2)::fs -> 
+      "\t" + s1 + ": " + s2 + """~\\""" + eval_fields {info = fs}
 
-let eval_one (e: Expr) (sw_this: StreamWriter)=
+let eval_expr (e: Expr) =
   match e with
-  | Instance (t, s) ->
-      let this_line = "Introducing " + s + ", the newest " + evalType(t) + "\n"
-      sw_this.WriteLine this_line
-  | _ -> printfn "Not writing to file because type has not been instituted yet"
+  | Instance (t, s, f) -> 
+      """\item """ + "About " + s + ", the newest " + evalType(t) + """: ~\\"""
+        + eval_fields(f) + """~\\"""
+  | Location (s, ss) -> """\item """ + "Location: " + s + """~\\""" + eval_fields(ss) + """~\\"""
+  | Action (s, i, t) ->
+      """\item """ + "Do task " + s + " every " + string(i) + evalTimescale(t) + """~\\"""
+  | _ -> failwith "Type not implemented yet, come back later"
 
-(* Evaluates exprs with the assumption that ALL VALUES of a
-certain kind of expr will be next to each other in the input .txt file *)
-let eval (e: Expr): string =
+let rec eval_list (e: Expr list) (sw_this: StreamWriter)=
+  match e with
+  | [] -> ""
+  | e1::es -> 
+      sw_this.WriteLine (eval_expr e1)
+      eval_list es sw_this
+      
+(* Evaluates expr list *)
+let eval (e: Expr list): string =
 
   // Create output LaTeX script
   let path = @"..\CareDoc.tex"
@@ -42,7 +63,7 @@ let eval (e: Expr): string =
   sw.WriteLine (section "Placeholder title")
   sw.WriteLine open_items
 
-  eval_one e sw
+  let res = eval_list e sw
 
   // Close LaTex script
   sw.WriteLine close_items

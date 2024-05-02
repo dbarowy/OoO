@@ -1,4 +1,4 @@
-﻿open Evaluator
+﻿open eval
 open System.IO
 open Parser
 

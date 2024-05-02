@@ -43,14 +43,14 @@ type Type =
 
 type Date = {mon: int; day: int; year: int}
 
+type Fields = {info: (string * string) list}
+
 type Expr =
 | Name of string
 | Num of int
-| Location of string * Expr
-| Fields of string list
+| Location of string * Fields
 | Action of string * int * Timescale
-| Instance of Type * string
-| New_Thing of Expr
-| Sequence of Expr list
+| Instance of Type * string  * Fields
+//| New_Thing //of Expr
 
-type Doc = Expr list
+//type Doc = Expr list
