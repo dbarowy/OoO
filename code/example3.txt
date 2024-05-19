@@ -1,0 +1,11 @@
+define date range 05/27/2024 15:00 - 06/02/2024
+caretaker (Mom and Dad)
+caretaker (Calder)
+new plant (Small Pothos) pot: ceramic; size: (4 inches);
+new plant (Medium Pothos) pot: ceramic; size: (8 inches);
+action (water small pothos) 2 days
+action (propagate jade tree cuttings) 1 year
+new plant (Barrel Cactus) pot: striped ceramic; warning: (very spikey);
+new plant (Prickly Pear Cactus) pot: plastic; warning: (you REALLY DO NOT want to touch this one trust me);
+location (Mission Windowsill) sun: full; (near heater): yes; orientation: South;
+location (Top of Closet) sun: full shade; (near heater): no;

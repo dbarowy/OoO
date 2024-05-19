@@ -3,22 +3,20 @@ module AST
 
 
 (*
-    <expr>      ::= define <timeframe> <expr>
-                 |  new <new_thing> <expr>
-                 |  add <action> <instance> <expr>
-                 |  add <instance> <location> <expr>
-                 |  <empty>
-    <new_thing> ::= <type>
-                 |  <instance>
-                 |  <action>
-                 |  <location>
-    <type>      ::= string                            // FOR NOW
-    <instance>  ::= string                            // FOR NOW
-    <action>    ::= string * int * <Timescale>
-    <Timescale> ::= Minute | Hour | Day | Week | Month | Year
-    <location>  ::= string * <instance> list
-    <timeframe> ::= <date> * <date>
-    <date>      ::= int/int/int
+    <expr>          ::= caretaker <name>
+                     |  location <location>
+                     |  action <action>
+                     |  new <instance>
+                     |  define date range <date_range>
+    <name>          ::= string
+    <location>      ::= string <fields>
+    <action>        ::= string * int * <timescale>
+    <instance>      ::= <category> * string * <fields>
+    <date_range>    ::= <date> * <date>
+    <fields>        ::= string: string; *
+    <date>          ::= int/int/int int:int
+    <catergory> ::= Kid | Plant | Dog | Cat | House | Fish | Adult
+    <timescale> ::= Minute | Hour | Day | Week | Month | Year
 
 *)
 
@@ -33,24 +31,22 @@ type Timescale =
 | Month
 | Year
 
-type Type =
+type Category =
 | Kid
 | Plant 
 | Dog
 | Cat
 | House
 | Fish
+| Adult
 
-type Date = {mon: int; day: int; year: int}
+type Date = string
 
 type Fields = {info: (string * string) list}
 
 type Expr =
 | Name of string
-| Num of int
 | Location of string * Fields
 | Action of string * int * Timescale
-| Instance of Type * string  * Fields
-//| New_Thing //of Expr
-
-//type Doc = Expr list
+| Instance of Category * string  * Fields
+| DateRange of Date * Date

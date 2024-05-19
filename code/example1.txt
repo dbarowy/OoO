@@ -1,0 +1,9 @@
+define date range 04/17/2023 - 05/18/2023
+caretaker (Susie Bell)
+location Home
+action (walk Alma) 5 hours
+action (walk Calvin) 3 hours
+action (feed both dogs) 1 day
+action wash 1 week
+new dog (Calvin) breed: Corgi; age: 3; issues: Barks a lot and will go crazy if you sneeze;
+new dog (Alma) breed: Corgi; age: 8;
