@@ -79,7 +79,7 @@ let assignAct (act: Expr) (dr: Expr): DateTime list =
       let newStarting = DateTime.Parse(starting)
       let newEnding = DateTime.Parse(ending)
       let res = dateSeq newStarting newEnding t i
-      List.sort res
+      List.sort res 
   | _ -> failwith "Internal error: Mismatched type input while assigning dates to action"
 
 (* Helper function that takes as input an action and a DateTime list for just that Action and builds a list of DateTime * Action list tuples *)

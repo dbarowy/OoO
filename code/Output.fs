@@ -9,7 +9,6 @@ open System.Diagnostics
 open System.Threading.Tasks
 
 
-
 type CommandResult =
   { ExitCode: int
     StandardOutput: string

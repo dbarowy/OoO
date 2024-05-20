@@ -22,7 +22,6 @@ module AST
 
 
 
-
 type Timescale =
 | Minute
 | Hour

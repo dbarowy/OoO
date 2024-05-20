@@ -21,7 +21,6 @@ let main args =
         // else
         //   eprintfn "%s" r.StandardError
         //   Environment.Exit(r.ExitCode)
-
         printfn "%A" res
 
     | None -> printfn "Invalid Program"

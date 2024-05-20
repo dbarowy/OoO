@@ -25,7 +25,7 @@ let dateRange =
 let word = 
   pmany1 (pletter <|> pdigit) |>> stringify
 
-(* Helper function to join list of words *)
+(* Helper function to join list of words *) 
 let rec join_words (strs: string list): string =
   match strs with
   | [] -> ""
