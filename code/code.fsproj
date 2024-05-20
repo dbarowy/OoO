@@ -5,11 +5,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Combinator.fs" />
-    <Compile Include="Output.fs" />
     <Compile Include="AST.fs" />
     <Compile Include="Parser.fs" />
     <Compile Include="Template.fs" />
     <Compile Include="Evaluator.fs" />
+    <Compile Include="Output.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
 </Project>

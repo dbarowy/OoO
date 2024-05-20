@@ -49,13 +49,11 @@ let executeCommand executable args =
 let executeShellCommand command =
   executeCommand "/usr/bin/env" [ "-S"; "bash"; "-c"; command ]
 
-// Invocation sample
-// let r1 = executeShellCommand "git add --chmod=+x Output.fs"
-// let r2 = executeShellCommand "Output.fs"
-let r = executeShellCommand """pdflatex Schedule Doc.tex""" |> Async.RunSynchronously
+// // Invocation sample
+// let r = executeShellCommand """pdflatex ScheduleDoc.tex""" |> Async.RunSynchronously
 
-if r.ExitCode = 0 then
-  printfn "%s" r.StandardOutput
-else
-  eprintfn "%s" r.StandardError
-  Environment.Exit(r.ExitCode)
+// if r.ExitCode = 0 then
+//   printfn "%s" r.StandardOutput
+// else
+//   eprintfn "%s" r.StandardError
+//   Environment.Exit(r.ExitCode)
