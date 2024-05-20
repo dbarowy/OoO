@@ -1,1 +1,11 @@
-new Cat (Calvin)
+define date range 05/14/2024 12:00 - 06/15/2024
+new dog (Calvin)
+location Home door: open;
+new dog (Alma) breed: corgi;
+location (Meg's House) Address: Springfield Road;
+action (water) 5 day
+action (wash) 2 day
+action (sleep) 1 days
+action (sing) 12 hour
+caretaker (Mom and Dad)
+caretaker (Susie Bell)
